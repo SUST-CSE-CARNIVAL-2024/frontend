@@ -4,10 +4,6 @@ import { AppState } from "../store";
 const initialState = {
   value: {
     user: "",
-    abxPurchaseRate: 0,
-    abxBalance: 0,
-    contract: null,
-    currentCommunityScanning: "",
   },
 };
 
