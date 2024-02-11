@@ -20,6 +20,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import GroupsIcon from "@mui/icons-material/Groups";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import ProjectTable from "./ProjectTable";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import { Avatar, Badge } from "@mui/material";
+import { deepOrange, deepPurple } from "@mui/material/colors";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const drawerWidth = 240;
 
@@ -27,6 +31,8 @@ function Sidebar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+
+  const [user, setUser] = React.useState("Prangon Chakraborty");
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -92,11 +98,35 @@ function Sidebar(props) {
       </List>
       <Divider />
       <List>
-        {["Logout"].map((text, index) => (
+        {["Notifications", "Logout", user].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
-              <ListItemIcon>{index === 0 ? <LogoutIcon /> : ""}</ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemIcon>
+                {index === 0 ? <NotificationsActiveIcon /> : ""}
+                {index === 1 ? <LogoutIcon /> : ""}
+                {index === 2 ? (
+                  <Avatar
+                    sx={{
+                      bgcolor: deepPurple[500],
+                      fontSize: "1rem",
+                      width: 28,
+                      height: 28,
+                    }}
+                  >
+                    OP
+                  </Avatar>
+                ) : (
+                  ""
+                )}
+              </ListItemIcon>
+              {index === 0 ? (
+                <Badge badgeContent={4} color="error">
+                  <ListItemText primary={text} />
+                </Badge>
+              ) : (
+                <ListItemText primary={text} />
+              )}
+              {index === 2 ? <ChevronRightIcon /> : ""}
             </ListItemButton>
           </ListItem>
         ))}
