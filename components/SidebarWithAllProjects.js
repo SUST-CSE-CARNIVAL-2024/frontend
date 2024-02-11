@@ -27,7 +27,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const drawerWidth = 240;
 
-function Sidebar(props) {
+function SidebarWithAllProjects(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -141,6 +141,25 @@ function Sidebar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+      {/* <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar> */}
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -187,7 +206,10 @@ function Sidebar(props) {
           // p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
-      ></Box>
+      >
+        {/* <Toolbar /> */}
+        <ProjectTable />
+      </Box>
     </Box>
   );
 }
@@ -200,4 +222,4 @@ Sidebar.propTypes = {
   window: PropTypes.func,
 };
 
-export default Sidebar;
+export default SidebarWithAllProjects;
