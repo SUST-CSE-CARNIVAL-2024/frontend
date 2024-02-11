@@ -1,9 +1,10 @@
 import React from "react";
+import Sidebar from "../../../components/Sidebar";
 
 export default function page() {
   return (
-    <div className=" w-full min-h-screen bg-red-500">
-      <SidebarWithSearch />
+    <div className="">
+      <Sidebar />
     </div>
   );
 }
