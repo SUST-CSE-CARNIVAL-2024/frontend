@@ -1,25 +1,20 @@
 "use client";
 import * as React from "react";
 import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupsIcon from "@mui/icons-material/Groups";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
-import ProjectTable from "./ProjectTable";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Avatar, Badge } from "@mui/material";
 import { deepOrange, deepPurple } from "@mui/material/colors";
@@ -113,7 +108,7 @@ function Sidebar(props) {
                       height: 28,
                     }}
                   >
-                    OP
+                    PC
                   </Avatar>
                 ) : (
                   ""
@@ -187,7 +182,9 @@ function Sidebar(props) {
           // p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
-      ></Box>
+      >
+        {/* here comes the additional component */}
+      </Box>
     </Box>
   );
 }

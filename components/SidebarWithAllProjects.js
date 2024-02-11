@@ -113,7 +113,7 @@ function SidebarWithAllProjects(props) {
                       height: 28,
                     }}
                   >
-                    OP
+                    PC
                   </Avatar>
                 ) : (
                   ""
@@ -214,7 +214,7 @@ function SidebarWithAllProjects(props) {
   );
 }
 
-Sidebar.propTypes = {
+SidebarWithAllProjects.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * Remove this when copying and pasting into your project.
