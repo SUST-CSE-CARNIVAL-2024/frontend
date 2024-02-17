@@ -4,8 +4,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "ColabEE",
-  description: "A collaboration hub for everyone",
+  title: "SOUL BUET",
+  description: "A Mental Health Community for Buetians",
 };
 
 export default function RootLayout({ children }) {

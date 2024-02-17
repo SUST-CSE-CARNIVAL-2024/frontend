@@ -1,9 +1,9 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
-import { AppState } from "../store";
 const initialState = {
   value: {
-    user: "",
+    email: "",
+    password: "",
   },
 };
 
@@ -15,7 +15,17 @@ export const auth = createSlice({
       return {
         value: {
           ...state.value,
-          user: action.payload,
+          email: action.payload,
+        },
+      };
+    },
+    //set the info from signup page , email and password
+    setUserandPassword: (state, action) => {
+      return {
+        value: {
+          ...state.value,
+          email: action.payload.email,
+          password: action.payload.password,
         },
       };
     },
@@ -23,13 +33,14 @@ export const auth = createSlice({
       return {
         value: {
           ...state.value,
-          user: "",
+          email: "",
+          password: "",
         },
       };
     },
   },
 });
 
-export const { signIn, signOut } = auth.actions;
+export const { signIn, signOut, setUserandPassword } = auth.actions;
 
 export default auth.reducer;
