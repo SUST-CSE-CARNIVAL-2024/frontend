@@ -25,6 +25,8 @@ import {
 } from "@mui/material";
 import { deepOrange, deepPurple } from "@mui/material/colors";
 import Modal from "@mui/material/Modal";
+import { useRouter } from "next/navigation";
+import { Store } from "react-notifications-component";
 
 const style = {
   position: "absolute",
@@ -45,19 +47,25 @@ const logoStyle = {
 };
 
 function AppAppBar({ mode, toggleColorMode }) {
+  const notification = {
+    title: "You have a notification",
+    message: "Someones wants to chat with you",
+    type: "success",
+    insert: "top",
+    container: "top-right",
+    animationIn: ["animate__animated animate__fadeIn"], // `animate.css v4` classes
+    animationOut: ["animate__animated animate__fadeOut"], // `animate.css v4` classes
+  };
   const [formData, setFormData] = React.useState({
-    ques1: "",
-    ques2: "",
-    ques3: "",
-    ques4: "",
-    mentorQues1: "",
-    mentorQues2: "",
-    mentor: "",
+    assistance: "",
+    current_situation: "",
+    assistance_details: "",
   });
   const [user, setUser] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const router = useRouter();
 
   const handleSignOut = (e) => {
     localStorage.removeItem("email");
@@ -81,130 +89,85 @@ function AppAppBar({ mode, toggleColorMode }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box sx={{ width: "100%", maxWidth: 740, paddingTop: "200px" }}>
-            <Typography
-              variant="h3"
-              gutterBottom
-              sx={{ paddingLeft: "100px", color: "blue" }}
-            >
-              YOU ARE ONE STEP AWAY
+          <Box sx={{ width: "100%", maxWidth: 740 }}>
+            <Typography variant="h3" gutterBottom sx={{ color: "blue" }}>
+              Say something about you
             </Typography>
           </Box>
           <Box width="100%">
             <form onSubmit={handleChatFormSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h6">Questionnaire</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="How have you been feeling emotionally lately?"
-                    name="ques1"
-                    value={formData.ques1}
-                    onChange={(e) => {
-                      setFormData({ ...formData, ques1: e.target.value });
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
                   <FormControl component="fieldset">
                     <FormLabel component="legend">
                       <Typography variant="h6">
                         {" "}
-                        Are you willing to serve as a Mentor?
+                        Whom do you want to talk with?
                       </Typography>
                     </FormLabel>
                     <RadioGroup
-                      aria-label="mentor"
-                      name="mentor"
-                      value={formData.mentor}
+                      aria-label="assistance"
+                      name="assistance"
+                      value={formData.assistance}
                       onChange={(e) => {
-                        setFormData({ ...formData, mentor: e.target.value });
+                        setFormData({
+                          ...formData,
+                          assistance: e.target.value,
+                        });
                       }}
                     >
                       <FormControlLabel
-                        value="yes"
+                        value="mentor"
                         control={<Radio />}
-                        label="YES"
+                        label="A Mentor"
                       />
                       <FormControlLabel
-                        value="no"
+                        value="user"
                         control={<Radio />}
-                        label="NO"
+                        label="A Listener"
                       />
                     </RadioGroup>
                   </FormControl>
                 </Grid>
-                {formData.mentor === "yes" && (
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Why are you interested in mentoring?"
-                      name="mentorQues1"
-                      value={formData.mentorQues1}
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          mentorQues1: e.target.value,
-                        });
-                      }}
-                    />
-                  </Grid>
-                )}
-                {formData.mentor === "yes" && (
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Share any previous experience as a mentor?"
-                      name="mentorQues2"
-                      value={formData.mentorQues2}
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          mentorQues2: e.target.value,
-                        });
-                      }}
-                    />
-                  </Grid>
-                )}
                 <Grid item xs={12}>
                   <TextField
+                    margin="normal"
                     fullWidth
-                    label="How would you rate your overall stress level?"
-                    name="ques2"
-                    value={formData.ques2}
+                    label="Kindly explain your current situation you are going through"
+                    name="current_situation"
+                    value={formData.current_situation}
                     onChange={(e) => {
-                      setFormData({ ...formData, ques2: e.target.value });
+                      setFormData({
+                        ...formData,
+                        current_situation: e.target.value,
+                      });
                     }}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    margin="normal"
                     fullWidth
-                    label="Do you find yourself losing interest in activities you once enjoyed?"
-                    name="ques3"
-                    value={formData.ques3}
+                    label="What kind of assistance do you expect from your chatmate?"
+                    name="assistance_details"
+                    value={formData.assistance_details}
                     onChange={(e) => {
-                      setFormData({ ...formData, ques3: e.target.value });
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Have you had any thoughts of harming yourself or others?"
-                    name="ques4"
-                    value={formData.ques4}
-                    onChange={(e) => {
-                      setFormData({ ...formData, ques4: e.target.value });
+                      setFormData({
+                        ...formData,
+                        assistance_details: e.target.value,
+                      });
                     }}
                   />
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Button variant="outlined" color="primary" type="submit">
-                    Submit
+                  <Button
+                    onClick={(e) => router.push("/chat")}
+                    variant="outlined"
+                    color="primary"
+                    type="submit"
+                  >
+                    Create Session
                   </Button>
                 </Grid>
               </Grid>
@@ -292,7 +255,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                   variant="text"
                   size="small"
                   component="a"
-                  href="/material-ui/getting-started/templates/sign-in/"
+                  href="/signin"
                   target="_blank"
                 >
                   Sign in

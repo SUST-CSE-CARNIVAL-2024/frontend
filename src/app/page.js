@@ -12,8 +12,11 @@ import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 // import SvgMaterialDesign from "docs/src/icons/SvgMaterialDesign";
 import AppAppBar from "../../components/AppAppBar";
 import Hero from "../../components/Hero";
-
+import "../../styles/chats.css";
 import Footer from "../../components/Footer";
+import { ReactNotifications } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+
 import getLPTheme from "./getLPTheme";
 // import { ReduxProvider } from "@/redux/provider";
 import { StateProvider } from "../../components/StateProvider";
@@ -45,9 +48,7 @@ function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
             pointerEvents: "none",
           },
         }}
-      >
-  
-      </ToggleButtonGroup>
+      ></ToggleButtonGroup>
     </Box>
   );
 }
@@ -76,6 +77,8 @@ export default function LandingPage() {
 
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
+      <ReactNotifications />
+
       <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
         <CssBaseline />
         <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
