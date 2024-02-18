@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useStateValue } from "../../../../components/StateProvider";
+import { ViewDay } from "@mui/icons-material";
 
 const QuestionnaireForm = () => {
   const [signUpdata, setSignUpData] = useState(null);
@@ -77,12 +78,20 @@ const QuestionnaireForm = () => {
     setSignUpData(resultFromSignUp);
     // console.log("data from signup page ", resultFromSignUp);
     //send the sign up data and questionaire data to the server
-    axios.post("http://172.17.0.1:3002/auth/signup", {
-      email: email,
-      password: password,
-      role: formData.mentor === "yes" ? "mentor" : "client",
-      questionnaires: formData.mentor === "yes" ? mentorForm : clientForm,
-    });
+    axios
+      .post("http://localhost:3002/auth/signup", {
+        email: email,
+        password: password,
+        role: formData.mentor === "yes" ? "mentor" : "client",
+        questionnaires: formData.mentor === "yes" ? mentorForm : clientForm,
+      })
+      .then((res) => {
+        console.log("response from the server ", res);
+        localStorage.setItem("token", res.data.token);
+      })
+      .catch((e) => {
+        console.log("error from the server ", e.response.data);
+      });
     //clean the password
     localStorage.removeItem("password");
     router.push("/");

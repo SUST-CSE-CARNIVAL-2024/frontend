@@ -13,6 +13,8 @@ import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorMode from "./ToggleColorMode";
 import Link from "next/link";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import axios from "axios";
 import {
   Avatar,
   FormControl,
@@ -48,8 +50,8 @@ const logoStyle = {
 
 function AppAppBar({ mode, toggleColorMode }) {
   const notification = {
-    title: "You have a notification",
-    message: "Someones wants to chat with you",
+    title: "Your Request is in progress",
+    message: "Someones will receive your request soon",
     type: "success",
     insert: "top",
     container: "top-right",
@@ -67,12 +69,125 @@ function AppAppBar({ mode, toggleColorMode }) {
   const handleClose = () => setOpen(false);
   const router = useRouter();
 
+  //state to capture the far user email
+  const [farUser, setFarUser] = React.useState("");
+
+  const openNotifications = (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    //get the notifications
+    axios
+      .get("http://localhost:3002/user/get_Notification", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        console.log("response is ", response);
+        localStorage.setItem("preSessionId", response.data[0].preChatSessionId);
+        localStorage.setItem("opposite_email", response.data[0].opposit_email);
+        setFarUser(response.data.email);
+        //set the notification here
+        Store.addNotification({
+          ...notification,
+          // onClick: handleNotificationClick,
+          title: `Someone wants to connect with you`,
+          dismiss: {
+            duration: 2000,
+            pauseOnHover: true,
+          },
+          touchSlidingExit: {
+            swipe: {
+              duration: 2000,
+              timingFunction: "ease-out",
+              delay: 0,
+            },
+            fade: {
+              duration: 2000,
+              timingFunction: "ease-out",
+              delay: 0,
+            },
+          },
+        });
+        // send confirm message
+        // axios.post(
+        //   "http://localhost:3002/user/confirm_Chat",
+        //   {
+        //     preSessionId: localStorage.getItem("preSessionId"),
+        //   },
+        //   {
+        //     headers: {
+        //       Authorization: "Bearer " + token,
+        //     },
+        //   }
+        // );
+        //now route to the chat page
+        setTimeout(() => {
+          router.push("/chat");
+        }, 3000);
+      });
+  };
+
   const handleSignOut = (e) => {
     localStorage.removeItem("email");
   };
 
   const handleChatFormSubmit = (e) => {
     e.preventDefault();
+  };
+  const handleCreateSession = (e) => {
+    e.preventDefault();
+    console.log("fron handleCreateSession");
+    let questionAnswers = [
+      "client",
+      "Lately, I've been feeling a mix of emotions, fluctuating between feeling content and moments of anxiety due to various personal and professional challenges.",
+      "My typical daily mood tends to be fairly stable, with a general sense of optimism, though I occasionally experience stress-related dips.",
+      "Yes, I've noticed some changes in my sleep patterns, including difficulty falling asleep and waking up a few times during the night, which seems to be linked to my current stress levels.",
+      "I would rate my overall stress level as moderate. While I manage to cope with most day-to-day tasks, there are moments when stress becomes more pronounced.",
+      "Specific situations causing me distress include looming work deadlines and personal commitments. Balancing these responsibilities has been particularly challenging lately.",
+    ];
+    const token = localStorage.getItem("token");
+    axios
+      .post(
+        "http://localhost:3002/user/request_Chat",
+        {
+          questionnaires: questionAnswers,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("response is ", response);
+        // localStorage.setItem("preSessionId",response.data.preSessionId);
+        setOpen(false);
+        //set the notification here
+        Store.addNotification({
+          ...notification,
+          title: `Your Request is in progress`,
+          dismiss: {
+            duration: 3000,
+            pauseOnHover: true,
+          },
+          touchSlidingExit: {
+            swipe: {
+              duration: 2000,
+              timingFunction: "ease-out",
+              delay: 0,
+            },
+            fade: {
+              duration: 2000,
+              timingFunction: "ease-out",
+              delay: 0,
+            },
+          },
+        });
+      })
+      .catch((error) => {
+        // Handle error
+      });
   };
 
   React.useEffect(() => {
@@ -162,7 +277,7 @@ function AppAppBar({ mode, toggleColorMode }) {
 
                 <Grid item xs={12}>
                   <Button
-                    onClick={(e) => router.push("/chat")}
+                    onClick={handleCreateSession}
                     variant="outlined"
                     color="primary"
                     type="submit"
@@ -239,6 +354,14 @@ function AppAppBar({ mode, toggleColorMode }) {
                   >
                     Chat
                   </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={openNotifications}
+                  sx={{ py: "6px", px: "12px" }}
+                >
+                  {/* <Typography variant="body2" color="text.primary"> */}
+                  <NotificationsActiveIcon />
+                  {/* </Typography> */}
                 </MenuItem>
               </Box>
             </Box>
@@ -335,7 +458,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                       color="primary"
                       variant="outlined"
                       component="a"
-                      href="/material-ui/getting-started/templates/sign-in/"
+                      href="/signin"
                       target="_blank"
                       sx={{ width: "100%" }}
                     >

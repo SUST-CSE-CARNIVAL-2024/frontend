@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -43,10 +44,22 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+      _email: data.get("email"),
+      _password: data.get("password"),
     });
     //send the email and password to the server
+    axios
+      .post("http://localhost:3002/auth/login", {
+        email: data.get("email"),
+        password: data.get("password"),
+      })
+      .then((res) => {
+        console.log("response from the server ", res);
+        localStorage.setItem("token", res.data.token);
+      })
+      .catch((e) => {
+        console.log("error from the server ", e.response);
+      });
     //if the email and password are correct then go to the home page
     // here the response will contain the email
     localStorage.setItem("email", data.get("email"));
